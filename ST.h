@@ -1,5 +1,7 @@
-struct tree
+typedef struct tTeste teste;
+
+struct tTeste
 {
-int temp
-int vrau
+	int temp;
+	int vrau;
 };
