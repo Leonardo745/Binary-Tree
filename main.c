@@ -16,12 +16,10 @@ int main(int argc, char *argv[ ])
 		contador++;
 	}
 
-	printf("%d\n", argc);
-
-	printf("%s\n", argv[1]);
-
-	printf("%d\n", quant_palavras(argv));
-
+	//printf("%d\n", argc);
+	//printf("%s\n", argv[1]);
+	//printf("%d\n", quant_palavras(argv));
+	
 	printf("%d\n", contador);
 
 	
@@ -30,6 +28,7 @@ int main(int argc, char *argv[ ])
 
 int quant_palavras(char *string[ ])
 {
+	//retorna um int com o numero inserido depois do -n inserido por parametro na main
 	int tamanho;
 	int i;
 	int palavras;
