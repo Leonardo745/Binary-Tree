@@ -2,46 +2,31 @@
 #include <stdlib.h>
 #include <string.h>
 #include "ST.h"
-
-int quant_palavras(char *[]);
+#include "Item.h"
 
 int main(int argc, char *argv[ ])
 {
+	arvore *raiz = NULL;
+	lista *inicio = NULL;
 	char palavra[50];
-	int contador = 0;
+	int i, exibir = 0;
 
+	for (i = 0; i < argc; i++)
+	{
+		if(argv[i][0] == '-' && argv[i][1] == 'n') 
+			exibir = atoi(&argv[i][2]);
+	}
+
+	printf("%i\n", exibir);
 
 	while((scanf("%s", palavra)) != EOF)
 	{
-		contador++;
+		Inserir(palavra, &raiz);
 	}
 
-	//printf("%d\n", argc);
-	//printf("%s\n", argv[1]);
-	//printf("%d\n", quant_palavras(argv));
-	
-	printf("%d\n", contador);
+	Imprimir(raiz, &inicio);
 
+	print(inicio, exibir);
 	
 	return 0;
-}
-
-int quant_palavras(char *string[ ])
-{
-	//retorna um int com o numero inserido depois do -n inserido por parametro na main
-	int tamanho;
-	int i;
-	int palavras;
-	char temp[50];
-	
-	tamanho = strlen(string[1]);
-	
-	for(i = 0;i<tamanho;i++)
-	{
-		temp[i] = string[1][i+2];
-	}
-
-	sscanf(temp,"%d",&palavras);
-
-	return palavras;
 }
