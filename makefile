@@ -7,7 +7,7 @@ project:
 	gcc -c Item.c
 	gcc -c main.c
 	gcc -o main main.o ST.o Item.o
-	./main < teste.txt
+	./main -n10 -wTestando < tale.txt
 	rm -rf main.o
 	rm -rf ST.o
 	rm -rf Item.o
