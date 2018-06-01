@@ -8,16 +8,34 @@ int main(int argc, char *argv[ ])
 {
 	arvore *raiz = NULL;
 	lista *inicio = NULL;
-	char palavra[50];
-	int i, exibir = 0;
+	char palavra[50], operacao, nome_arquivo[20], palavraEncontrar[50];
+	int i, numero_n, flag = 0;
 
 	for (i = 0; i < argc; i++)
 	{
 		if(argv[i][0] == '-' && argv[i][1] == 'n') 
-			exibir = atoi(&argv[i][2]);
+			numero_n = atoi(&argv[i][2]);
+		if(argv[i][0] == '-' && argv[i][1] == 'w')
+		{
+			operacao = 'w';
+			strcpy(nome_arquivo, argv[i]);
+			nomeDoArquivo(nome_arquivo);
+		}
+		if(argv[i][0] == '-' && argv[i][1] == 'r')
+		{
+			operacao = 'r';
+			strcpy(nome_arquivo, argv[i]);
+			nomeDoArquivo(nome_arquivo);
+		}
+		if(argv[i][0] == '-' && argv[i][1] == 's') {
+			strcpy(palavraEncontrar,argv[i]);
+			flag = 1;
+		}
 	}
 
-	printf("%i\n", exibir);
+	//printf("%s\n", palavraEncontrar);
+	//printf("%c\n", operacao);
+	//printf("%s\n", nome_arquivo);
 
 	while((scanf("%s", palavra)) != EOF)
 	{
@@ -26,7 +44,10 @@ int main(int argc, char *argv[ ])
 
 	Imprimir(raiz, &inicio);
 
-	print(inicio, exibir);
-	
+	print(inicio, numero_n);
+
+	if(flag == 1)
+		Word(raiz, palavraEncontrar);
+		
 	return 0;
 }
