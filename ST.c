@@ -81,7 +81,7 @@ void print(lista *inicio, int numero_n)
 	}
 }
 
-void nomeDoArquivo(char nome_arquivo[])
+void nomeDoArquivo(char nome_arquivo[], char operacao, lista *inicio, int numero_n)
 {
 	int tamanho = strlen(nome_arquivo);
 	int i;
@@ -94,7 +94,50 @@ void nomeDoArquivo(char nome_arquivo[])
 	}
 	nome_arquivo[i-2] = '\0';
 
-	printf("%s\n", nome_arquivo);
+	strcat(nome_arquivo,".txt");
+
+	//printf("%c\n", operacao);
+	//printf("%s\n", nome_arquivo);
+
+	if(operacao == 'w')
+		escreverNoArquivo(nome_arquivo, inicio, numero_n);
+	else
+		leNoArquivo(nome_arquivo, inicio, numero_n);
+}
+
+void escreverNoArquivo(char nome_arquivo[], lista *inicio, int numero_n) {
+
+	int i;
+
+	FILE *arq;
+	arq = fopen(nome_arquivo,"w");
+
+	while(inicio != NULL && i < numero_n) {
+
+		fprintf(arq, "%i %s\n", inicio->frequencia, inicio->palavra);
+		inicio = inicio->prox;
+		i += 1;
+	}
+
+	fclose(arq);
+}
+
+void leNoArquivo(char nome_arquivo[], lista *inicio, int numero_n) {
+
+	int i;
+
+	FILE *arq;
+	arq = fopen(nome_arquivo,"r");
+
+	while(inicio != NULL && i < numero_n) {
+
+		fscanf(arq, "%d %s\n", &inicio->frequencia, inicio->palavra);
+		printf("%i %s\n", inicio->frequencia, inicio->palavra);
+		inicio = inicio->prox;
+		i += 1;
+	}
+
+	fclose(arq);
 }
 
 void Word(arvore *raiz, char palavra [ ]) {
