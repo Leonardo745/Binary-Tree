@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include "ST.h"
 
 int Inserir(char palavra[], arvore **raiz)
@@ -33,8 +34,8 @@ void Imprimir(arvore *raiz, lista **inicio)
 	}
 }
 
-void ordenaPorValor(arvore *raiz, lista **inicio) {
-
+void ordenaPorValor(arvore *raiz, lista **inicio) 
+{
 	lista *anterior, *atual, *novo;
 
 	novo = (lista *) malloc(sizeof(lista));
@@ -46,37 +47,105 @@ void ordenaPorValor(arvore *raiz, lista **inicio) {
 
 	strcpy(novo->palavra,raiz->palavra);
 
-	if(atual == NULL) {
+	if(atual == NULL) 
+	{
     	novo->prox = NULL;
     	*inicio = novo;
     } 
-	else {
-        while(atual != NULL && atual->frequencia > novo->frequencia) {
-
-            anterior = atual;
+	else 
+	{
+        while(atual != NULL && atual->frequencia > novo->frequencia) 
+        {
+			anterior = atual;
             atual = atual->prox;
-        }
+		}
         
         novo->prox = atual;
         
-        if(anterior == NULL) {
-
+        if(anterior == NULL)
             *inicio = novo;
-        } 
-		
-		else {
+		else
             anterior->prox = novo;
-        }
     }
 }
 
-void print(lista *inicio, int exibir) {
-
+void print(lista *inicio, int numero_n) 
+{
 	int i = 0;
 
-	while(inicio != NULL && i < exibir) {
+	while(inicio != NULL && i < numero_n) 
+	{
 		printf("%i %s\n", inicio->frequencia, inicio->palavra);
 		inicio = inicio->prox;
 		i += 1;
 	}
+}
+
+void nomeDoArquivo(char nome_arquivo[])
+{
+	int tamanho = strlen(nome_arquivo);
+	int i;
+
+	//printf("%d\n", tamanho);
+	for(i = 0; i < tamanho; i++)
+	{
+		if(i != 0 || i != 1)
+			nome_arquivo[i-2] = nome_arquivo[i];
+	}
+	nome_arquivo[i-2] = '\0';
+
+	printf("%s\n", nome_arquivo);
+}
+
+void Word(arvore *raiz, char palavra [ ]) {
+
+	clock_t comeco = clock();
+
+	int posicao = 0, i, repeticao = 0;
+	int tamanho = strlen(palavra);
+
+	//printf("%s\n", palavra);
+
+	for(i = 0; i < tamanho; i++)
+	{
+		if(i != 0 || i != 1)
+			palavra[i-2] = palavra[i];
+	}
+	palavra[i-2] = '\0';
+
+	repeticao = procura(raiz, palavra, &posicao);
+	if(repeticao == 0)
+		printf("palavra nao encontrada\n");
+	else {
+	printf("%s %i %i ", palavra, repeticao, posicao);
+	}
+
+	clock_t fim = clock();
+
+	double tempo = (double)(fim - comeco) * 1000.0 / CLOCKS_PER_SEC;
+    printf("%f\n", tempo);
+}
+
+int procura(arvore *raiz, char palavra[], int *posicao)
+{
+    if (raiz)
+    {
+        if(strcmp(raiz->palavra,palavra) == 0) {
+			*posicao += 1;
+	    	return (raiz->frequencia);
+		}
+        else
+        {
+            if(strcmp(raiz->palavra,palavra) < 0) {
+				*posicao += 1;
+                return procura(raiz->dir, palavra, posicao);
+			}
+            else {
+				*posicao += 1;
+                return procura(raiz->esq, palavra, posicao);
+			}
+        }
+	return 0;
+    }
+	return 0;
 }
