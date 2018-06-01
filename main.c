@@ -19,13 +19,13 @@ int main(int argc, char *argv[ ])
 		{
 			operacao = 'w';
 			strcpy(nome_arquivo, argv[i]);
-			nomeDoArquivo(nome_arquivo);
+			flag = 2;
 		}
 		if(argv[i][0] == '-' && argv[i][1] == 'r')
 		{
 			operacao = 'r';
 			strcpy(nome_arquivo, argv[i]);
-			nomeDoArquivo(nome_arquivo);
+			flag = 2;
 		}
 		if(argv[i][0] == '-' && argv[i][1] == 's') {
 			strcpy(palavraEncontrar,argv[i]);
@@ -44,10 +44,13 @@ int main(int argc, char *argv[ ])
 
 	Imprimir(raiz, &inicio);
 
-	print(inicio, numero_n);
+	if(flag != 2)
+		print(inicio, numero_n);
 
 	if(flag == 1)
 		Word(raiz, palavraEncontrar);
+	if(flag == 2)
+		nomeDoArquivo(nome_arquivo, operacao, inicio, numero_n);
 		
 	return 0;
 }
