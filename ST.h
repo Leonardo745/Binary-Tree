@@ -3,20 +3,13 @@
 #include <string.h>
 #include <time.h>
 
-typedef struct tArvore arvore;
 typedef struct tLista lista;
+typedef struct tArvore arvore;
 
 struct tArvore
 {
-	char palavra[50];
-	int frequencia;
+	struct lista *item;
 	struct tArvore *dir, *esq;
-};
-
-struct tLista {
-	char palavra[50];
-	int frequencia;
-	struct tLista *prox;
 };
 
 int Inserir(char palavra[], arvore **raiz);

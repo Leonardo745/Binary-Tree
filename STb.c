@@ -9,5 +9,5 @@
 
 int InserirB(char palavra[], arvore **raiz)
 {
-
+	return 0;
 }

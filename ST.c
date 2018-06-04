@@ -3,6 +3,7 @@
 #include <string.h>
 #include <time.h>
 #include "ST.h"
+#include "Item.h"
 
 int Inserir(char palavra[], arvore **raiz)
 {

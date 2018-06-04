@@ -1,4 +1,5 @@
 typedef struct tArvore arvore;
+typedef struct tLista lista;
 
 
 
