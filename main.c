@@ -2,46 +2,86 @@
 #include <stdlib.h>
 #include <string.h>
 #include "ST.h"
+#include "Item.h"
+#include "STb.h"
 
-int quant_palavras(char *[]);
 
 int main(int argc, char *argv[ ])
 {
+	arvore *raiz = NULL;
+	lista *inicio = NULL;
+
 	char palavra[50];
-	int contador = 0;
-
-
-	while((scanf("%s", palavra)) != EOF)
-	{
-		contador++;
-	}
-
-	//printf("%d\n", argc);
-	//printf("%s\n", argv[1]);
-	//printf("%d\n", quant_palavras(argv));
-	
-	printf("%d\n", contador);
-
-	
-	return 0;
-}
-
-int quant_palavras(char *string[ ])
-{
-	//retorna um int com o numero inserido depois do -n inserido por parametro na main
-	int tamanho;
+	char operacao;
+	char nome_arquivo[20];
+	char palavraEncontrar[50];
 	int i;
-	int palavras;
-	char temp[50];
-	
-	tamanho = strlen(string[1]);
-	
-	for(i = 0;i<tamanho;i++)
+	int numero_n;
+	int flag = 0;
+	int balaceada = 0;
+
+	for (i = 0; i < argc; i++)
 	{
-		temp[i] = string[1][i+2];
+		if(argv[i][0] == '-' && argv[i][1] == 'n')
+		{
+			numero_n = atoi(&argv[i][2]);
+		}
+
+		if(argv[i][0] == '-' && argv[i][1] == 'w')
+		{
+			operacao = 'w';
+			strcpy(nome_arquivo, argv[i]);
+			flag = 2;
+		}
+
+		if(argv[i][0] == '-' && argv[i][1] == 'r')
+		{
+			operacao = 'r';
+			strcpy(nome_arquivo, argv[i]);
+			flag = 2;
+		}
+
+		if(argv[i][0] == '-' && argv[i][1] == 's') 
+		{
+			strcpy(palavraEncontrar,argv[i]);
+			flag = 1;
+		}
+
+		if(argv[i][0] == '-' && argv[i][1] == 'b')
+		{
+			balaceada = 1;
+		}
 	}
 
-	sscanf(temp,"%d",&palavras);
+	//printf("%s\n", palavraEncontrar);
+	//printf("%c\n", operacao);
+	//printf("%s\n", nome_arquivo);
 
-	return palavras;
+	if(balaceada == 1)
+	{
+		while((scanf("%s", palavra)) != EOF)
+		{
+			InserirB(palavra, &raiz);
+		}
+	}
+	else
+	{
+		while((scanf("%s", palavra)) != EOF)
+		{
+			Inserir(palavra, &raiz);
+		}
+	}
+
+
+	Imprimir(raiz, &inicio);
+
+	if(flag != 2)
+		print(inicio, numero_n);
+
+	if(flag == 1)
+		Word(raiz, palavraEncontrar);
+	if(flag == 2)
+		nomeDoArquivo(nome_arquivo, operacao, inicio, numero_n);
+		
+	return 0;
 }
