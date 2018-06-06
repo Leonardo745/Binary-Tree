@@ -1,5 +1,6 @@
 //item.h
 typedef struct tLista lista;
+typedef struct tArvore arvore;
 
 struct tLista {
 
@@ -8,3 +9,5 @@ struct tLista {
 	struct tLista *prox;
 };
 
+
+int criaItem(char palavra[] ,int , arvore **raiz);
