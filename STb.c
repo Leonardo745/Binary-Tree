@@ -5,6 +5,8 @@
 #include "ST.h"
 //#include "STb.h"
 
+
+
 int InserirB(char palavra[], arvore **raiz)
 {
 	return 0;

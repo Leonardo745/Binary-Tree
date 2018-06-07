@@ -5,10 +5,11 @@
 #include "Item.h"
 #include "STb.h"
 
+
 int main(int argc, char *argv[ ])
 {
 	arvore *raiz = NULL;
-	lista *inicio = NULL;
+	arvore *raiz_ordenada = NULL;
 
 	char palavra[50];
 	char operacao;
@@ -19,6 +20,16 @@ int main(int argc, char *argv[ ])
 	int flag = 0;
 	int balaceada = 0;
 
+	while((scanf("%s", palavra)) != EOF)
+	{
+		Inserir(palavra, &raiz);
+	}
+	
+	ordenaPorValor(raiz , &raiz_ordenada);
+	
+	Imprimir(&raiz);
+}	
+/*
 	for (i = 0; i < argc; i++)
 	{
 		if(argv[i][0] == '-' && argv[i][1] == 'n')
@@ -51,7 +62,7 @@ int main(int argc, char *argv[ ])
 			balaceada = 1;
 		}
 	}
-
+/*
 	//printf("%s\n", palavraEncontrar);
 	//printf("%c\n", operacao);
 	//printf("%s\n", nome_arquivo);
@@ -84,3 +95,4 @@ int main(int argc, char *argv[ ])
 		
 	return 0;
 }
+*/
