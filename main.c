@@ -17,7 +17,7 @@ int main(int argc, char *argv[ ])
 	char palavraEncontrar[50];
 	int i;
 	int exibir = 0;
-	int flag = 0;
+	int flag = 0, flag1 = 0, flag2 = 0;
 
 	for (i = 0; i < argc; i++)
 	{
@@ -30,20 +30,19 @@ int main(int argc, char *argv[ ])
 		{
 			operacao = 'w';
 			strcpy(nome_arquivo, argv[i]);
-			flag = 2;
+			flag = 1;
 		}
 
 		if(argv[i][0] == '-' && argv[i][1] == 'r')
 		{
 			operacao = 'r';
 			strcpy(nome_arquivo, argv[i]);
-			flag = 2;
 		}
 
 		if(argv[i][0] == '-' && argv[i][1] == 's') 
 		{
 			strcpy(palavraEncontrar,argv[i]);
-			flag = 1;
+			flag2 = 1;
 		}
 	}
 
@@ -51,20 +50,27 @@ int main(int argc, char *argv[ ])
 	//printf("%c\n", operacao);
 	//printf("%s\n", nome_arquivo);
 
-	while((scanf("%s", palavra)) != EOF)
-	{
-		Inserir(palavra, &raiz);
+	if(operacao == 'r' && flag != 1)
+		leituraDoArquivo(nome_arquivo, &raiz);
+
+	if(operacao != 'r') {
+		while((scanf("%s", palavra)) != EOF)
+		{
+			Inserir(palavra, &raiz);
+		}
+		flag1 = 1;
 	}
 	
 	ordenaPorValor(raiz , &raiz_ordenada);
-	
+
 	if(exibir > 0)
 		Imprimir(raiz_ordenada, &exibir);
 
-	if(flag == 1)
-		//Word(raiz, palavraEncontrar);
-	if(flag == 2)
-		//nomeDoArquivo(nome_arquivo, operacao, inicio, numero_n);
+	if(flag2 == 1)
+		Word(raiz, palavraEncontrar);
+
+	if(operacao == 'w' && flag1 == 1)
+		escritaDoArquivo(nome_arquivo, raiz);
 		
 	return 0;
 }
