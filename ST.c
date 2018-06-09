@@ -93,12 +93,12 @@ int inserePorValor(arvore *raiz,arvore **raiz_ordenada)
 
 }
 
-int Imprimir(arvore *raiz, int *exibir)
+void Imprimir(arvore *raiz, int *exibir)
 {
 	if(raiz)
 	{
 		Imprimir(raiz->esq, exibir);
-		printf("%s %i\n", raiz->item->palavra, raiz->item->frequencia);
+		exibicao(raiz, exibir);
 		if(raiz->item->prox != NULL)
 			ImprimirLista(raiz->item->prox->prox, exibir);
 		Imprimir(raiz->dir, exibir);
@@ -110,9 +110,19 @@ void ImprimirLista(lista *item, int *exibir) {
 	lista *aux = item;
 
     for (aux = item; item != NULL; item = item->prox) {
-
-		printf("%s %i\n", item->palavra, item->frequencia);
+		if(*exibir > 0) {
+			printf("%s %i\n", item->palavra, item->frequencia);
+			*exibir -= 1;
+		}
     }
+}
+
+void exibicao(arvore *raiz, int *exibir) {
+
+	if(*exibir > 0) {
+		printf("%s %i\n", raiz->item->palavra, raiz->item->frequencia);
+		*exibir -= 1;
+	}
 }
 
 /*
