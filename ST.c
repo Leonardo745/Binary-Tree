@@ -3,7 +3,8 @@
 #include <string.h>
 #include <time.h>
 #include "ST.h"
-
+#include "Item.h"
+/*
 int Inserir(char palavra[], arvore **raiz)
 {
 	if(*raiz == NULL)
@@ -23,52 +24,98 @@ int Inserir(char palavra[], arvore **raiz)
 	if(strcmp((*raiz)->palavra, palavra) > 0) return (Inserir(palavra, &(*raiz)->esq));
 	return (Inserir(palavra, &(*raiz)->dir));
 }
+*/
 
-void Imprimir(arvore *raiz, lista **inicio)
+int Inserir(char palavra[], arvore **raiz)
+{
+	if(*raiz == NULL)
+	{
+		(*raiz) = (arvore *) malloc(sizeof(arvore));
+		if((*raiz) == NULL) return (-1);
+		
+		(*raiz)->esq = NULL;
+		(*raiz)->dir = NULL;
+
+		criaItem(palavra,1, raiz);
+
+		return (1);
+
+	}
+	if(strcmp((*raiz)->item ->palavra, palavra) == 0) 
+	{
+		(*raiz)->item->frequencia += 1;
+		return (0);
+	}
+
+	if(strcmp((*raiz)->item->palavra, palavra) > 0) 
+		return (Inserir(palavra, &(*raiz)->esq));
+
+	return (Inserir(palavra, &(*raiz)->dir));
+
+
+}
+
+void ordenaPorValor(arvore *raiz , arvore **raiz_ordenada)
 {
 	if(raiz)
 	{
-		Imprimir(raiz->esq, inicio);
-		ordenaPorValor(raiz, inicio);
-		Imprimir(raiz->dir, inicio);
+		ordenaPorValor(raiz->esq, raiz_ordenada);
+		inserePorValor(raiz, raiz_ordenada);
+		ordenaPorValor(raiz->dir, raiz_ordenada);
 	}
 }
 
-void ordenaPorValor(arvore *raiz, lista **inicio) 
+int inserePorValor(arvore *raiz,arvore **raiz_ordenada)
 {
-	lista *anterior, *atual, *novo;
-
-	novo = (lista *) malloc(sizeof(lista));
-
-	atual = *inicio;
-    anterior = NULL;
-
-	novo->frequencia = raiz->frequencia;
-
-	strcpy(novo->palavra,raiz->palavra);
-
-	if(atual == NULL) 
+	if(*raiz_ordenada == NULL)
 	{
-    	novo->prox = NULL;
-    	*inicio = novo;
-    } 
-	else 
+		(*raiz_ordenada) = (arvore *) malloc(sizeof(arvore));
+		
+		(*raiz_ordenada)->esq = NULL;
+		(*raiz_ordenada)->dir = NULL;
+
+		criaItem(raiz -> item -> palavra ,raiz -> item -> frequencia, raiz_ordenada);
+
+	}
+
+	//strcmp retorna 0 se for igual
+	if((raiz -> item -> frequencia) == ((*raiz_ordenada) -> item -> frequencia)) 
 	{
-        while(atual != NULL && atual->frequencia > novo->frequencia) 
-        {
-			anterior = atual;
-            atual = atual->prox;
-		}
-        
-        novo->prox = atual;
-        
-        if(anterior == NULL)
-            *inicio = novo;
-		else
-            anterior->prox = novo;
+
+		percorre_lista(raiz, raiz_ordenada);
+		return 0;
+	}
+
+	if((raiz->item->frequencia) > ((*raiz_ordenada) -> item -> frequencia)) 
+		return (inserePorValor(raiz, &(*raiz_ordenada)->esq));
+
+	return (inserePorValor(raiz, &(*raiz_ordenada)->dir));
+
+}
+
+int Imprimir(arvore *raiz, int *exibir)
+{
+	if(raiz)
+	{
+		Imprimir(raiz->esq, exibir);
+		printf("%s %i\n", raiz->item->palavra, raiz->item->frequencia);
+		if(raiz->item->prox != NULL)
+			ImprimirLista(raiz->item->prox->prox, exibir);
+		Imprimir(raiz->dir, exibir);
+	}
+}
+
+void ImprimirLista(lista *item, int *exibir) {
+
+	lista *aux = item;
+
+    for (aux = item; item != NULL; item = item->prox) {
+
+		printf("%s %i\n", item->palavra, item->frequencia);
     }
 }
 
+/*
 void print(lista *inicio, int numero_n) 
 {
 	int i = 0;
@@ -160,13 +207,13 @@ void Word(arvore *raiz, char palavra [ ]) {
 	if(repeticao == 0)
 		printf("palavra nao encontrada\n");
 	else {
-	printf("%s %i %i ", palavra, repeticao, posicao);
+	printf("Palavra: %s\nRepeticao: %i\nPosicao: %i\n", palavra, repeticao, posicao);
 	}
 
 	clock_t fim = clock();
 
 	double tempo = (double)(fim - comeco) * 1000.0 / CLOCKS_PER_SEC;
-    printf("%f\n", tempo);
+    printf("Tempo de Execucao: %f µs\n", tempo);
 }
 
 int procura(arvore *raiz, char palavra[], int *posicao)
@@ -192,3 +239,4 @@ int procura(arvore *raiz, char palavra[], int *posicao)
     }
 	return 0;
 }
+*/

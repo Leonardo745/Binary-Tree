@@ -1,22 +1,17 @@
-typedef struct tArvore arvore;
 typedef struct tLista lista;
+typedef struct tArvore arvore;
 
 struct tArvore
 {
-	char palavra[50];
-	int frequencia;
-	struct tArvore *dir, *esq;
-};
-
-struct tLista {
-	char palavra[50];
-	int frequencia;
-	struct tLista *prox;
+	lista *item;
+	arvore *dir, *esq;
 };
 
 int Inserir(char palavra[], arvore **raiz);
-void Imprimir(arvore *raiz, lista **inicio);
-void ordenaPorValor(arvore *raiz, lista **inicio);
+void ordenaPorValor(arvore *raiz , arvore **raiz_ordenada);
+int inserePorValor(arvore *raiz,arvore **raiz_ordenada);
+int Imprimir(arvore *raiz, int *exibir);
+void ImprimirLista(lista *item, int *exibir);
 void print(lista *inicio, int exibir);
 void nomeDoArquivo(char nome_arquivo[], char operacao, lista *inicio, int numero_n);
 void escreverNoArquivo(char nome_arquivo[], lista *inicio, int numero_n);
