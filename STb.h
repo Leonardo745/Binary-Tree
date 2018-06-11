@@ -1,6 +1,19 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+
 typedef struct tArvore arvore;
-typedef struct tLista lista;
 
+enum Balance {E,C,D};
 
+struct tArvore
+{
+	char palavra[50];
+	int frequencia;
+	enum Balance bal;
+	arvore *dir, *esq;
+};
 
-int InserirB(char palavra[], arvore **raiz);
+void inserirB(char palavra[], int *h, arvore **raiz);
+void imprimirB(arvore *raiz);

@@ -9,7 +9,7 @@ project:
 	gcc -c Item.c
 	gcc -c main.c
 	gcc -o Projeto2 main.o ST.o Item.o STb.o
-	./Projeto2 < tale.txt
+	./Projeto2 < tale.txt -n5 -b
 	rm -rf *.o
 	rm -rf *.h.gch
 	rm -rf Projeto2

@@ -11,4 +11,4 @@ struct tLista {
 
 
 int criaItem(char palavra[] ,int frequencia, arvore **raiz);
-void percorre_lista(arvore *raiz, lista **raiz_ordenada);
+void percorre_lista(arvore *raiz, arvore **raiz_ordenada);

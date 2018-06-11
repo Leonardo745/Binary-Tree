@@ -4,27 +4,6 @@
 #include <time.h>
 #include "ST.h"
 #include "Item.h"
-/*
-int Inserir(char palavra[], arvore **raiz)
-{
-	if(*raiz == NULL)
-	{
-		(*raiz) = (struct tArvore *) malloc(sizeof(arvore));
-		if(*raiz == NULL) return (-1);
-		strcpy((*raiz)->palavra, palavra);
-		(*raiz)->frequencia = 1;
-		(*raiz)->esq = (*raiz)->dir = NULL;
-		return (1);
-	}
-	if(strcmp((*raiz)->palavra, palavra) == 0) //strcmp retorna 0 se for igual
-	{
-		(*raiz)->frequencia += 1;
-		return (0);
-	}
-	if(strcmp((*raiz)->palavra, palavra) > 0) return (Inserir(palavra, &(*raiz)->esq));
-	return (Inserir(palavra, &(*raiz)->dir));
-}
-*/
 
 int Inserir(char palavra[], arvore **raiz)
 {
@@ -55,24 +34,21 @@ int Inserir(char palavra[], arvore **raiz)
 
 }
 
-void ordenaPorValor(arvore *raiz , arvore **raiz_ordenada) 
+void ordenaPorValor(arvore *raiz , arvore **raiz_ordenada)
 {
 	if(raiz)
 	{
-
 		ordenaPorValor(raiz->esq, raiz_ordenada);
-		inserePorValor(raiz , raiz_ordenada);
+		inserePorValor(raiz, raiz_ordenada);
 		ordenaPorValor(raiz->dir, raiz_ordenada);
 	}
 }
 
-void inserePorValor(arvore *raiz,arvore **raiz_ordenada)
+int inserePorValor(arvore *raiz,arvore **raiz_ordenada)
 {
 	if(*raiz_ordenada == NULL)
-
 	{
 		(*raiz_ordenada) = (arvore *) malloc(sizeof(arvore));
-		if((*raiz_ordenada) == NULL);
 		
 		(*raiz_ordenada)->esq = NULL;
 		(*raiz_ordenada)->dir = NULL;
@@ -84,46 +60,57 @@ void inserePorValor(arvore *raiz,arvore **raiz_ordenada)
 	//strcmp retorna 0 se for igual
 	if((raiz -> item -> frequencia) == ((*raiz_ordenada) -> item -> frequencia)) 
 	{
-	
+
 		percorre_lista(raiz, raiz_ordenada);
-		
+		return 0;
 	}
 
 	if((raiz->item->frequencia) > ((*raiz_ordenada) -> item -> frequencia)) 
-		return (Inserir(raiz, &(*raiz_ordenada)->esq));
+		return (inserePorValor(raiz, &(*raiz_ordenada)->esq));
 
-	return (Inserir(raiz, &(*raiz_ordenada)->dir));
+	return (inserePorValor(raiz, &(*raiz_ordenada)->dir));
 
 }
-/*
-void Imprimir(arvore *raiz, lista **inicio)
+
+void Imprimir(arvore *raiz, int *exibir)
 {
 	if(raiz)
 	{
-		Imprimir(raiz->esq, inicio);
-		ordenaPorValor(raiz);
-		Imprimir(raiz->dir, inicio);
+		Imprimir(raiz->esq, exibir);
+		exibicao(raiz, exibir);
+		if(raiz->item->prox != NULL)
+			ImprimirLista(raiz->item->prox->prox, exibir);
+		Imprimir(raiz->dir, exibir);
 	}
 }
 
-void print(lista *inicio, int numero_n) 
-{
-	int i = 0;
+void ImprimirLista(lista *item, int *exibir) {
 
-	while(inicio != NULL && i < numero_n) 
-	{
-		printf("%i %s\n", inicio->frequencia, inicio->palavra);
-		inicio = inicio->prox;
-		i += 1;
+	lista *aux = item;
+
+    for (aux = item; item != NULL; item = item->prox) {
+		if(*exibir > 0) {
+			printf("%i %s\n", item->frequencia, item->palavra);
+			*exibir -= 1;
+		}
+    }
+}
+
+void exibicao(arvore *raiz, int *exibir) {
+
+	if(*exibir > 0) {
+		printf("%i %s\n", raiz->item->frequencia, raiz->item->palavra);
+		*exibir -= 1;
 	}
 }
 
-void nomeDoArquivo(char nome_arquivo[], char operacao, lista *inicio, int numero_n)
+void leituraDoArquivo(char nome_arquivo[], arvore **raiz)
 {
 	int tamanho = strlen(nome_arquivo);
 	int i;
 
 	//printf("%d\n", tamanho);
+
 	for(i = 0; i < tamanho; i++)
 	{
 		if(i != 0 || i != 1)
@@ -136,45 +123,94 @@ void nomeDoArquivo(char nome_arquivo[], char operacao, lista *inicio, int numero
 	//printf("%c\n", operacao);
 	//printf("%s\n", nome_arquivo);
 
-	if(operacao == 'w')
-		escreverNoArquivo(nome_arquivo, inicio, numero_n);
-	else
-		leNoArquivo(nome_arquivo, inicio, numero_n);
+	leNoArquivo(nome_arquivo, raiz);
 }
 
-void escreverNoArquivo(char nome_arquivo[], lista *inicio, int numero_n) {
+void escritaDoArquivo(char nome_arquivo[], arvore *raiz)
+{
+	int tamanho = strlen(nome_arquivo);
+	int i;
+
+	//printf("%d\n", tamanho);
+
+	for(i = 0; i < tamanho; i++)
+	{
+		if(i != 0 || i != 1)
+			nome_arquivo[i-2] = nome_arquivo[i];
+	}
+	nome_arquivo[i-2] = '\0';
+
+	strcat(nome_arquivo,".txt");
+
+	//printf("%c\n", operacao);
+	//printf("%s\n", nome_arquivo);
+
+	escreverNoArquivo(nome_arquivo, raiz);
+}
+
+void escreverNoArquivo(char nome_arquivo[], arvore *raiz) {
 
 	int i;
 
 	FILE *arq;
 	arq = fopen(nome_arquivo,"w");
 
-	while(inicio != NULL && i < numero_n) {
+	escreverNoArquivoRecursivo(arq, raiz);
 
-		fprintf(arq, "%i %s\n", inicio->frequencia, inicio->palavra);
-		inicio = inicio->prox;
-		i += 1;
+	fclose(arq);
+}
+
+void escreverNoArquivoRecursivo (FILE *arq, arvore *raiz) {
+
+	if(raiz)
+	{
+		fprintf(arq, "%i %s\n", raiz->item->frequencia, raiz->item->palavra);
+		escreverNoArquivoRecursivo(arq, raiz->esq);
+		escreverNoArquivoRecursivo(arq, raiz->dir);
+	}
+}
+
+void leNoArquivo(char nome_arquivo[], arvore **raiz) {
+
+	int frequencia;
+	char palavra[50];
+
+	FILE *arq;
+	arq = fopen(nome_arquivo,"r");
+
+	while((fscanf(arq, "%i %s", &frequencia, palavra)) != EOF) {
+
+		inserirAposLeitura(frequencia, palavra, raiz);
 	}
 
 	fclose(arq);
 }
 
-void leNoArquivo(char nome_arquivo[], lista *inicio, int numero_n) {
+int inserirAposLeitura(int frequencia, char palavra[ ], arvore **raiz) {
 
-	int i;
+	if(*raiz == NULL)
+	{
+		(*raiz) = (arvore *) malloc(sizeof(arvore));
+		if((*raiz) == NULL) return (-1);
+		
+		(*raiz)->esq = NULL;
+		(*raiz)->dir = NULL;
 
-	FILE *arq;
-	arq = fopen(nome_arquivo,"r");
+		criaItem(palavra,frequencia, raiz);
+		//printf("%i %s\n", (*raiz)->item->frequencia, (*raiz)->item->palavra);
 
-	while(inicio != NULL && i < numero_n) {
+		return (1);
 
-		fscanf(arq, "%d %s\n", &inicio->frequencia, inicio->palavra);
-		printf("%i %s\n", inicio->frequencia, inicio->palavra);
-		inicio = inicio->prox;
-		i += 1;
+	}
+	if(strcmp((*raiz)->item ->palavra, palavra) == 0) 
+	{
+		return (0);
 	}
 
-	fclose(arq);
+	if(strcmp((*raiz)->item->palavra, palavra) > 0) 
+		return (inserirAposLeitura(frequencia, palavra, &(*raiz)->esq));
+
+	return (inserirAposLeitura(frequencia, palavra, &(*raiz)->dir));
 }
 
 void Word(arvore *raiz, char palavra [ ]) {
@@ -210,13 +246,13 @@ int procura(arvore *raiz, char palavra[], int *posicao)
 {
     if (raiz)
     {
-        if(strcmp(raiz->palavra,palavra) == 0) {
+        if(strcmp(raiz->item->palavra,palavra) == 0) {
 			*posicao += 1;
-	    	return (raiz->frequencia);
+	    	return (raiz->item->frequencia);
 		}
         else
         {
-            if(strcmp(raiz->palavra,palavra) < 0) {
+            if(strcmp(raiz->item->palavra,palavra) < 0) {
 				*posicao += 1;
                 return procura(raiz->dir, palavra, posicao);
 			}
@@ -225,8 +261,7 @@ int procura(arvore *raiz, char palavra[], int *posicao)
                 return procura(raiz->esq, palavra, posicao);
 			}
         }
-	return 0;
+		return 0;
     }
 	return 0;
 }
-*/

@@ -16,83 +16,78 @@ int main(int argc, char *argv[ ])
 	char nome_arquivo[20];
 	char palavraEncontrar[50];
 	int i;
-	int numero_n;
-	int flag = 0;
-	int balaceada = 0;
+	int exibir = 0;
+	int flag = 0, flag1 = 0, flag2 = 0;
+	int h, flagBalanceada = 0;
 
-	while((scanf("%s", palavra)) != EOF)
-	{
-		Inserir(palavra, &raiz);
-	}
-	
-	ordenaPorValor(raiz , &raiz_ordenada);
-	
-	Imprimir(&raiz);
-}	
-/*
 	for (i = 0; i < argc; i++)
 	{
 		if(argv[i][0] == '-' && argv[i][1] == 'n')
 		{
-			numero_n = atoi(&argv[i][2]);
+			exibir = atoi(&argv[i][2]);
 		}
 
 		if(argv[i][0] == '-' && argv[i][1] == 'w')
 		{
 			operacao = 'w';
 			strcpy(nome_arquivo, argv[i]);
-			flag = 2;
+			flag = 1;
 		}
 
 		if(argv[i][0] == '-' && argv[i][1] == 'r')
 		{
 			operacao = 'r';
 			strcpy(nome_arquivo, argv[i]);
-			flag = 2;
 		}
 
 		if(argv[i][0] == '-' && argv[i][1] == 's') 
 		{
 			strcpy(palavraEncontrar,argv[i]);
-			flag = 1;
+			flag2 = 1;
 		}
 
-		if(argv[i][0] == '-' && argv[i][1] == 'b')
+		if(argv[i][0] == '-' && argv[i][1] == 'b') 
 		{
-			balaceada = 1;
+			flagBalanceada = 1;
 		}
 	}
-/*
+
 	//printf("%s\n", palavraEncontrar);
 	//printf("%c\n", operacao);
 	//printf("%s\n", nome_arquivo);
 
-	if(balaceada == 1)
-	{
-		while((scanf("%s", palavra)) != EOF)
-		{
-			InserirB(palavra, &raiz);
-		}
-	}
-	else
-	{
+	if(operacao == 'r' && flag != 1)
+		leituraDoArquivo(nome_arquivo, &raiz);
+
+	if(operacao != 'r') {
 		while((scanf("%s", palavra)) != EOF)
 		{
 			Inserir(palavra, &raiz);
 		}
+		flag1 = 1;
+	}
+	
+	if(flagBalanceada == 1)
+	{
+		h = 0;
+		while((scanf("%s", palavra)) != EOF)
+		{
+			InserirB(palavra, &h, &raiz);
+		}
+		printf("\n");
+		imprimirB(raiz);
 	}
 
+	ordenaPorValor(raiz , &raiz_ordenada);
 
-	Imprimir(raiz, &inicio);
+	if(exibir > 0)
+		Imprimir(raiz_ordenada, &exibir);
 
-	if(flag != 2)
-		print(inicio, numero_n);
-
-	if(flag == 1)
+	if(flag2 == 1)
 		Word(raiz, palavraEncontrar);
-	if(flag == 2)
-		nomeDoArquivo(nome_arquivo, operacao, inicio, numero_n);
+
+	if(operacao == 'w' && flag1 == 1)
+		escritaDoArquivo(nome_arquivo, raiz);
 		
 	return 0;
 }
-*/

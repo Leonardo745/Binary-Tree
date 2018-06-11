@@ -25,10 +25,20 @@ int criaItem(char palavra[],int frequencia , arvore **raiz)
 
 void percorre_lista(arvore *raiz, arvore **raiz_ordenada)
 {
-	if(item->prox != NULL) {
-		criaItem(raiz->item->palavra, raiz->item->frequencia, &item);
-	}
-	else {
-	percorre_lista(raiz, item->prox);
-	}
+    lista *aux = (lista *) malloc(sizeof(lista));
+    lista *aux2 = (lista *) malloc(sizeof(lista));
+
+    aux = (*raiz_ordenada)->item;
+    aux2->prox = NULL;
+    strcpy(aux2->palavra, (raiz)->item->palavra);
+	aux2->frequencia = (raiz)-> item ->frequencia;
+
+    if (aux == NULL)
+        (*raiz_ordenada)->item = aux2;
+
+    else {
+        while(aux->prox != NULL)
+            aux = aux->prox;
+        aux->prox = aux2;
+    }
 }
