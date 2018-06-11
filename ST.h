@@ -1,4 +1,4 @@
-#include<stdio.h> //stdio é necessario, pois usa o tipo FILE (linha 20);
+#include <stdio.h> //stdio é necessario, pois usa o tipo FILE (linha 20);
 
 typedef struct tLista lista;
 typedef struct tArvore arvore;
