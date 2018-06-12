@@ -4,17 +4,22 @@
 #include <time.h>
 #include "STb.h"
 
-void inserirB(char palavra[], int *h, arvore **raiz)
+void inserirB(char palavra[], int *h, arvoreB **raiz)
 {
-	struct arvore *p1, *p2;
+	arvoreB *p1, *p2;
      
     if (*raiz == NULL) 
     {
-    	(*raiz) = (arvore *) malloc(sizeof(arvore));
+    	(*raiz) = (arvoreB *) malloc(sizeof(arvoreB));
 		*h = 1;
 		strcpy((*raiz)->palavra, palavra);
+		(*raiz)->frequencia += 1;
 		(*raiz) -> esq = (*raiz) -> dir = NULL;
 		(*raiz) -> bal=C;
+	}
+	else if(strcmp((*raiz)->palavra, palavra) == 0)
+	{
+		(*raiz)->frequencia += 1;
 	}
 	else
 		if(strcmp((*raiz)->palavra, palavra) > 0) 
@@ -34,22 +39,19 @@ void inserirB(char palavra[], int *h, arvore **raiz)
 					case E: 
 						p1 = (*raiz)->esq;
 						if (p1->bal == E) 
-						{ // rebalanceamento simples
+						{
 							(*raiz) -> esq = p1->dir;
 							p1->dir = (*raiz);
 							(*raiz)->bal= C;
 							(*raiz) = p1; 
 						}
 						else 
-						{ //rebalanceamento duplo
+						{
 							p2 = p1->dir;
 							p1->dir = p2->esq;
 							p2->esq = p1;
 							(*raiz)->esq=p2->dir;
 							p2->dir=(*raiz);
-							//printf("P1, bal : %d  %d\n", p1->chave, p1->bal);
-							//printf("P2, bal : %d  %d\n", p2->chave, p2->bal);
-							//printf("Raiz, bal : %d  %d\n", (*raiz)->chave, (*raiz)->bal); getchar();
 							if (p2->bal==E) (*raiz)->bal = D;
 							else (*raiz)->bal = C;
 							if (p2->bal==D) p1->bal = E;
@@ -80,14 +82,14 @@ void inserirB(char palavra[], int *h, arvore **raiz)
 						case D: 
 							p1= (*raiz) -> dir;
 							if (p1->bal == D) 
-							{ // rebalanceamento simples
+							{
 								(*raiz) -> dir = p1->esq;
 								p1->esq = (*raiz);
 								(*raiz)->bal= C;
 								(*raiz) = p1; 
 							}
 							else 
-							{ //rebalanceamento duplo
+							{
 								p2 = p1->esq;
 								p1->esq = p2->dir;
 								p2->dir = p1;
@@ -101,15 +103,15 @@ void inserirB(char palavra[], int *h, arvore **raiz)
 							}
 							(*raiz)->bal = C;
 							*h=0;
-								break;
+							break;
 					}      
 				}
 			}
 }
 
-void imprimirB(arvore *raiz)
+void imprimirB(arvoreB *raiz)
 {
-	if (raiz != NULL)
+	if (raiz)
 	{
 		printf("%i %s\n", raiz->frequencia, raiz->palavra);
 		imprimirB(raiz->esq);

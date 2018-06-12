@@ -18,7 +18,6 @@ int Inserir(char palavra[], arvore **raiz)
 		criaItem(palavra,1, raiz);
 
 		return (1);
-
 	}
 	if(strcmp((*raiz)->item ->palavra, palavra) == 0) 
 	{
@@ -30,8 +29,6 @@ int Inserir(char palavra[], arvore **raiz)
 		return (Inserir(palavra, &(*raiz)->esq));
 
 	return (Inserir(palavra, &(*raiz)->dir));
-
-
 }
 
 void ordenaPorValor(arvore *raiz , arvore **raiz_ordenada)
@@ -54,7 +51,6 @@ int inserePorValor(arvore *raiz,arvore **raiz_ordenada)
 		(*raiz_ordenada)->dir = NULL;
 
 		criaItem(raiz -> item -> palavra ,raiz -> item -> frequencia, raiz_ordenada);
-
 	}
 
 	//strcmp retorna 0 se for igual
@@ -69,7 +65,6 @@ int inserePorValor(arvore *raiz,arvore **raiz_ordenada)
 		return (inserePorValor(raiz, &(*raiz_ordenada)->esq));
 
 	return (inserePorValor(raiz, &(*raiz_ordenada)->dir));
-
 }
 
 void Imprimir(arvore *raiz, int *exibir)
@@ -109,8 +104,6 @@ void leituraDoArquivo(char nome_arquivo[], arvore **raiz)
 	int tamanho = strlen(nome_arquivo);
 	int i;
 
-	//printf("%d\n", tamanho);
-
 	for(i = 0; i < tamanho; i++)
 	{
 		if(i != 0 || i != 1)
@@ -119,10 +112,6 @@ void leituraDoArquivo(char nome_arquivo[], arvore **raiz)
 	nome_arquivo[i-2] = '\0';
 
 	strcat(nome_arquivo,".txt");
-
-	//printf("%c\n", operacao);
-	//printf("%s\n", nome_arquivo);
-
 	leNoArquivo(nome_arquivo, raiz);
 }
 
@@ -131,8 +120,6 @@ void escritaDoArquivo(char nome_arquivo[], arvore *raiz)
 	int tamanho = strlen(nome_arquivo);
 	int i;
 
-	//printf("%d\n", tamanho);
-
 	for(i = 0; i < tamanho; i++)
 	{
 		if(i != 0 || i != 1)
@@ -141,10 +128,6 @@ void escritaDoArquivo(char nome_arquivo[], arvore *raiz)
 	nome_arquivo[i-2] = '\0';
 
 	strcat(nome_arquivo,".txt");
-
-	//printf("%c\n", operacao);
-	//printf("%s\n", nome_arquivo);
-
 	escreverNoArquivo(nome_arquivo, raiz);
 }
 
@@ -197,7 +180,6 @@ int inserirAposLeitura(int frequencia, char palavra[ ], arvore **raiz) {
 		(*raiz)->dir = NULL;
 
 		criaItem(palavra,frequencia, raiz);
-		//printf("%i %s\n", (*raiz)->item->frequencia, (*raiz)->item->palavra);
 
 		return (1);
 
@@ -220,8 +202,6 @@ void Word(arvore *raiz, char palavra [ ]) {
 	int posicao = 0, i, repeticao = 0;
 	int tamanho = strlen(palavra);
 
-	//printf("%s\n", palavra);
-
 	for(i = 0; i < tamanho; i++)
 	{
 		if(i != 0 || i != 1)
@@ -233,13 +213,13 @@ void Word(arvore *raiz, char palavra [ ]) {
 	if(repeticao == 0)
 		printf("palavra nao encontrada\n");
 	else {
-	printf("Palavra: %s\nRepeticao: %i\nPosicao: %i\n", palavra, repeticao, posicao);
+	printf("Palavra: %s Repeticao: %i Altura: %i ", palavra, repeticao, posicao);
 	}
 
 	clock_t fim = clock();
 
 	double tempo = (double)(fim - comeco) * 1000.0 / CLOCKS_PER_SEC;
-    printf("Tempo de Execucao: %f µs\n", tempo);
+    printf("Tempo de Busca: %f µs\n", tempo);
 }
 
 int procura(arvore *raiz, char palavra[], int *posicao)

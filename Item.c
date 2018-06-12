@@ -20,7 +20,6 @@ int criaItem(char palavra[],int frequencia , arvore **raiz)
 	(*raiz)-> item ->frequencia = frequencia;
 	(*raiz)-> item -> prox = NULL;
 	return 0;
-
 }
 
 void percorre_lista(arvore *raiz, arvore **raiz_ordenada)
